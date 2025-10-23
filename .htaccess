@@ -1,0 +1,35 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Redirect to https (optional - uncomment if you want to force SSL)
+    # RewriteCond %{HTTPS} off
+    # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Redirect all requests to public folder
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# Disable directory browsing
+Options -Indexes
+
+# Follow symbolic links
+Options +FollowSymLinks
+
+# Set default charset
+AddDefaultCharset UTF-8
+
+# Protect sensitive files
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Protect Laravel files
+<FilesMatch "(^composer\.(json|lock)|^package(-lock)?\.json|\.env|artisan)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
