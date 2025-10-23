@@ -65,7 +65,7 @@ export default function Welcome() {
                                         🎉 Welcome to the Hive!
                                     </h3>
                                     <p className="text-gray-700 text-sm">
-                                        Thanks for subscribing! Check your email for your <span className="font-bold text-amber-600">10% discount code</span>.
+                                        Thanks for subscribing! Stay tuned for exclusive updates and special offers.
                                     </p>
                                 </div>
                                 <button

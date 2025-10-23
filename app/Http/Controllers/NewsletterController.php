@@ -18,6 +18,6 @@ class NewsletterController extends Controller
             'ip_address' => $request->ip(),
         ]);
 
-        return back()->with('success', 'Thanks for subscribing! Check your email for your 10% discount code.');
+        return back()->with('success', 'Thanks for subscribing! Stay tuned for exclusive updates and special offers.');
     }
 }
