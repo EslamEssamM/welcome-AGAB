@@ -88,11 +88,11 @@ export default function Welcome() {
 
                 <div className="relative z-10">
                     <header className="container mx-auto px-4 py-8 text-center">
-                        <div className="flex justify-center mb-6">
+                        <div className="flex justify-center mb-4">
                             <img
                                 src="/logo.png"
                                 alt="AGAB Logo"
-                                className="h-64 w-auto drop-shadow-lg"
+                                className="h-48 w-auto drop-shadow-lg"
                             />
                         </div>
                     </header>
