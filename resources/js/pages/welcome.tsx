@@ -44,7 +44,7 @@ export default function Welcome() {
                             <img
                                 src="/logo.png"
                                 alt="AGAB Logo"
-                                className="h-32 w-auto drop-shadow-lg"
+                                className="h-64 w-auto drop-shadow-lg"
                             />
                         </div>
                     </header>
