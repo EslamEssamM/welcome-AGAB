@@ -1,12 +1,27 @@
 import { Head, useForm, usePage } from '@inertiajs/react';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useEffect, useState } from 'react';
 
 export default function Welcome() {
     const { flash } = usePage().props as any;
+    const [showToast, setShowToast] = useState(false);
 
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
-    });    const handleSubmit: FormEventHandler = (e) => {
+    });
+
+    useEffect(() => {
+        console.log('Flash data:', flash); // Debug log
+        if (flash?.success) {
+            console.log('Showing toast!'); // Debug log
+            setShowToast(true);
+            const timer = setTimeout(() => {
+                setShowToast(false);
+            }, 5000);
+            return () => clearTimeout(timer);
+        }
+    }, [flash]);
+
+    const handleSubmit: FormEventHandler = (e) => {
         e.preventDefault();
         post('/newsletter/subscribe', {
             preserveScroll: true,
@@ -33,6 +48,39 @@ export default function Welcome() {
             </Head>
 
             <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50">
+                {/* Success Toast Notification */}
+                {showToast && (
+                    <div className="fixed top-8 right-8 animate-slide-in" style={{ zIndex: 9999 }}>
+                        <div className="bg-white rounded-2xl shadow-2xl border-4 border-green-400 p-6 max-w-md">
+                            <div className="flex items-start space-x-4">
+                                <div className="flex-shrink-0">
+                                    <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center animate-bounce-once">
+                                        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div className="flex-1">
+                                    <h3 className="text-lg font-bold text-green-800 mb-1">
+                                        🎉 Welcome to the Hive!
+                                    </h3>
+                                    <p className="text-gray-700 text-sm">
+                                        Thanks for subscribing! Check your email for your <span className="font-bold text-amber-600">10% discount code</span>.
+                                    </p>
+                                </div>
+                                <button
+                                    onClick={() => setShowToast(false)}
+                                    className="flex-shrink-0 text-gray-400 hover:text-gray-600 transition-colors"
+                                >
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 <div className="fixed inset-0 opacity-5" style={{
                     backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l25.98 15v30L30 60 4.02 45V15z' fill='%23000' fill-opacity='1'/%3E%3C/svg%3E\")",
                     backgroundSize: '60px 60px'
@@ -78,12 +126,6 @@ export default function Welcome() {
                                 <h2 className="text-2xl font-bold text-amber-900 mb-4 text-center">
                                     🍯 Get Your Sweet Discount!
                                 </h2>
-
-                                {flash?.success && (
-                                    <div className="mb-4 p-4 bg-green-100 border-2 border-green-400 text-green-800 rounded-lg text-center">
-                                        {flash.success}
-                                    </div>
-                                )}
 
                                 <form onSubmit={handleSubmit} className="space-y-4">
                                     <div>
@@ -264,6 +306,32 @@ export default function Welcome() {
                 }
                 .animate-fade-in {
                     animation: fade-in 0.8s ease-out;
+                }
+
+                @keyframes slide-in {
+                    from {
+                        opacity: 0;
+                        transform: translateX(100%);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateX(0);
+                    }
+                }
+                .animate-slide-in {
+                    animation: slide-in 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+                }
+
+                @keyframes bounce-once {
+                    0%, 100% {
+                        transform: scale(1);
+                    }
+                    50% {
+                        transform: scale(1.2);
+                    }
+                }
+                .animate-bounce-once {
+                    animation: bounce-once 0.6s ease-in-out;
                 }
             `}</style>
         </>
